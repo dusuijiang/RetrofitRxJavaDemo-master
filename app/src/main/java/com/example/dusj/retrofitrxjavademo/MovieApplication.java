@@ -2,6 +2,7 @@ package com.example.dusj.retrofitrxjavademo;
 
 import android.app.Application;
 
+import com.example.dusj.retrofitrxjavademo.utils.LogUtil;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -16,7 +17,8 @@ public class MovieApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        // 初始化Looger工具
+        LogUtil.init(BuildConfig.LOG_DEBUG);
         // 初始化 Image-Loader
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)

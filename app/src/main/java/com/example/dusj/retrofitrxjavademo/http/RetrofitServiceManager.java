@@ -5,6 +5,7 @@ import com.example.dusj.retrofitrxjavademo.ApiConfig;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -20,6 +21,11 @@ public class RetrofitServiceManager {
         builder.writeTimeout(DEFAULT_READ_TIME_OUT,TimeUnit.SECONDS);//写操作 超时时间
         builder.readTimeout(DEFAULT_READ_TIME_OUT,TimeUnit.SECONDS);//读操作超时时间
 
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLogger());
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.addInterceptor(logInterceptor);
+        builder.addNetworkInterceptor(logInterceptor);
+        //builder.addInterceptor(logInterceptor);
         // 添加公共参数拦截器
         HttpCommonInterceptor commonInterceptor = new HttpCommonInterceptor.Builder()
                 .addHeaderParams("paltform","android")
@@ -27,6 +33,7 @@ public class RetrofitServiceManager {
                 .addHeaderParams("userId","123445")
                 .build();
         builder.addInterceptor(commonInterceptor);
+
 
         // 创建Retrofit
         mRetrofit = new Retrofit.Builder()
