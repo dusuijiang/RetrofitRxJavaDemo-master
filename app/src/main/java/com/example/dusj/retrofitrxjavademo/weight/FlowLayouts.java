@@ -65,12 +65,24 @@ public class FlowLayouts extends ViewGroup {
             int higthChild = child.getMeasuredHeight() + lm.bottomMargin + lm.topMargin;
 
             if (lineWidth + widthChild > widthChild){
+                width = Math.max(lineWidth,widthChild);
+                widthChild = width;
 
+                higth += lineHigth;
+                lineHigth = widthChild;
             }else {
                 lineWidth += widthChild;
-                lineWidth = Math.max(lineHigth,higthChild);
+                lineHigth = Math.max(lineHigth,higthChild);
+            }
+
+            if (i == mCount -1){
+                width = Math.max(width,lineHigth);
+                higth += lineHigth;
             }
         }
+
+        setMeasuredDimension((widthMode == MeasureSpec.EXACTLY) ? widthSize : width,
+                (heigthMode == MeasureSpec.EXACTLY) ? heightSize : higth);
 
     }
 
